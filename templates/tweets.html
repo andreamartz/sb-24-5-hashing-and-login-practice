@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Viewing Tweets{% endblock %}
+
+{% block content %}
+<h1>Viewing Tweets</h1>
+
+<form method="POST">
+  <!-- CSRF hidden tag -->
+  {{ form.hidden_tag() }}
+
+  {% for field in form 
+    if field.widget.input_type != 'hidden' %}
+
+  <p>
+    {{ field.label }}
+    {{ field(class_="form-control") }}
+
+    {% for error in field.errors %}
+    <span class="form-text text-danger">{{ error }}</span>
+
+    {% endfor %}
+  </p>
+  {% endfor %}
+
+  <button class="btn btn-success" type="submit">Post Tweet</button>
+
+</form>
+
+<!-- <ul>
+  {% for tweet in tweets %}
+  <li><span class="font-weight-bold">{{ tweet.user.username }}</span> - {{ tweet.text }}
+    {% if session['user_id'] == tweet.user_id %}
+    <!-- Forms don't have DELETE method -->
+<!-- Colt is "keeping it simple" by using a form with POST method to delete a tweet -->
+<!-- <form id="delete-tweet" action="/tweets/{{ tweet.id }}" method="POST">
+  <button class="btn btn-sm btn-danger">X</button>
+</form>
+{% endif %}
+</li>
+
+
+{% endfor %}
+</ul> -->
+
+{% for tweet in tweets %}
+
+<div class="card my-4">
+  <div class="card-body">
+    <h5 class="card-title text-info font-weight-bold">{{ tweet.user.username }}
+      {% if session['user_id'] == tweet.user_id %}
+      <!-- Forms don't have DELETE method -->
+      <!-- Colt is "keeping it simple" by using a form with POST method to delete a tweet -->
+      <form id="delete-tweet" action="/tweets/{{ tweet.id }}" method="POST">
+        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+      </form>
+      {% endif %}
+    </h5>
+    <h6 class="card-subtitle mb-2 text-muted">Date goes here</h6>
+    <p class="card-text">
+      {{ tweet.text }}
+    </p>
+  </div>
+</div>
+
+
+{% endfor %}
+
+
+{% endblock %}
